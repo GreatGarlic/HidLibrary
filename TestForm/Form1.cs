@@ -23,34 +23,6 @@ namespace TestForm
             InitializeComponent();
         }
         /// <summary>
-        /// HID设备拔出事件触发.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Hid_OnSpecifiedDeviceRemoved(object sender, EventArgs e)
-        {
-
-        }
-        /// <summary>
-        /// HID设备插入事件触发.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Hid_OnSpecifiedDeviceArrived(object sender, EventArgs e)
-        {
-
-        }
-        /// <summary>
-        /// HID接收数据方法.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Hid_DataReceived(object sender, report e)
-        {
-
-        }
-
-        /// <summary>
         /// 注册HID设备事件监听.
         /// </summary>
         /// <param name="e"></param>
@@ -68,6 +40,41 @@ namespace TestForm
             hid.ParseMessages(ref m);
             base.WndProc(ref m);
         }
+        /// <summary>
+        /// HID设备拔出事件触发.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Hid_OnSpecifiedDeviceRemoved(object sender, EventArgs e)
+        {
+            MessageBox.Show("HID设备移除");
+        }
+        /// <summary>
+        /// HID设备插入事件触发.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Hid_OnSpecifiedDeviceArrived(object sender, EventArgs e)
+        {
+            MessageBox.Show("HID设备插入");
+        }
+        /// <summary>
+        /// HID接收数据方法.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Hid_DataReceived(object sender, report e)
+        {
+            string text = Encoding.Default.GetString(e.reportBuff);
+            BeginInvoke(new EventHandler(delegate
+            {
+                receiveText.AppendText(text + "\r\n");
+            }));
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            hid.Write(sendText.Text);
+        }
     }
 }
