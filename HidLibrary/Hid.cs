@@ -163,8 +163,7 @@ namespace HID
             {
                 hidDevice.EndRead(iResult);//读取结束,如果读取错误就会产生一个异常
                 byte[] reportData = new byte[readBuff.Length - 1];
-                for (int i = 1; i < readBuff.Length; i++)
-                    reportData[i - 1] = readBuff[i];
+                Buffer.BlockCopy(readBuff, 1, reportData, 0, reportData.Length);
                 report e = new report(readBuff[0], reportData);
                 OnDataReceived(e); //发出数据到达消息
                 BeginAsyncRead();//启动下一次读操作
